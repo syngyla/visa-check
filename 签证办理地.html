@@ -1,0 +1,107 @@
+记事本
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>签证办理城市查询</title>
+<style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    select, button { padding: 8px; font-size: 14px; margin-top: 10px; }
+    .result { margin-top: 20px; padding: 15px; border: 1px solid #ccc; border-radius: 5px; background: #f9f9f9; white-space: pre-line; }
+</style>
+</head>
+<body>
+
+<h2>签证办理城市查询系统</h2>
+<p>请选择您的户籍省份，系统将显示您需要前往的哈萨克斯坦使领馆信息。</p>
+
+<select id="provinceSelect">
+    <option value="">-- 请选择省份 --</option>
+    <option>北京</option><option>天津</option><option>河北</option><option>山西</option><option>内蒙古</option>
+    <option>辽宁</option><option>吉林</option><option>黑龙江</option><option>山东</option><option>河南</option>
+    <option>湖北</option><option>上海</option><option>江苏</option><option>浙江</option><option>安徽</option>
+    <option>福建</option><option>江西</option><option>重庆</option><option>四川</option><option>陕西</option>
+    <option>甘肃</option><option>宁夏</option><option>新疆</option><option>香港</option><option>澳门</option><option>台湾</option>
+</select>
+
+<button id="copyBtn" style="display:none;">复制信息</button>
+
+<div class="result" id="result">请选择省份以查看信息。</div>
+
+<script>
+const embassyInfo = {
+    "北京": {
+        city: "北京",
+        address: "北京市朝阳区东直门外大街亮马河南路14号塔园外交办公楼2-3层",
+        phone: "+86-10-6532-2065",
+        fax: "+86-10-6532-4702",
+        email: "beijing@mfa.kz"
+    },
+    "天津": "北京", "河北": "北京", "山西": "北京", "内蒙古": "北京",
+    "辽宁": "北京", "吉林": "北京", "黑龙江": "北京", "山东": "北京", "河南": "北京", "湖北": "北京",
+
+    "上海": {
+        city: "上海",
+        address: "上海市长宁区延安西路1160号首信银都大厦1004室",
+        phone: "+86-21-6208-1386",
+        fax: "+86-21-6208-1389",
+        email: "shanghai@mfa.kz"
+    },
+    "江苏": "上海", "浙江": "上海", "安徽": "上海", "福建": "上海", "江西": "上海",
+
+    "西安": {
+        city: "西安",
+        address: "西安市新城区长乐西路6号陕西省对外经济贸易合作厅",
+        phone: "+86-29-8721-9832",
+        fax: "+86-29-8721-9833",
+        email: "xian@mfa.kz"
+    },
+    "重庆": "西安", "四川": "西安", "陕西": "西安", "甘肃": "西安", "宁夏": "西安",
+
+    "新疆": {
+        city: "乌鲁木齐",
+        address: "乌鲁木齐市昆民街216号",
+        phone: "+86-991-381-1154 / 381-6186",
+        fax: "+86-991-382-1203",
+        email: "urumqi@mfa.kz"
+    },
+
+    "香港": {
+        city: "香港",
+        address: "香港中环云咸街40-44号云咸广场25楼",
+        phone: "(852)2548-3841",
+        fax: "(852)2548-8361",
+        email: "hongkong@mfa.kz"
+    },
+
+    "澳门": "香港",
+    "台湾": "香港"
+};
+
+let lastText = "";
+
+document.getElementById('provinceSelect').addEventListener('change', function() {
+    let province = this.value;
+    let info = embassyInfo[province];
+    if (typeof info === "string") {
+        info = embassyInfo[info];
+    }
+    if (info) {
+        lastText = `办理城市：${info.city}\n地址：${info.address}\n电话：${info.phone}\n传真：${info.fax}\n邮箱：${info.email}`;
+        document.getElementById('result').innerText = lastText;
+        document.getElementById('copyBtn').style.display = "inline-block";
+    } else {
+        document.getElementById('result').innerHTML = "暂无信息";
+        document.getElementById('copyBtn').style.display = "none";
+    }
+});
+
+document.getElementById('copyBtn').addEventListener('click', function() {
+    navigator.clipboard.writeText(lastText).then(() => {
+        alert("信息已复制，可以直接粘贴到微信或邮件！");
+    });
+});
+</script>
+
+</body>
+</html>
